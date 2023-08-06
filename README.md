@@ -7,7 +7,7 @@
 
 <hr>
 
-Project var茶
+<h2> Project var茶 </h2>
 
 - '팀장' 박준현
 - '팀원' 권지현
