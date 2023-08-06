@@ -1,0 +1,354 @@
+
+VO 작성
+DAO 작성
+
+--우선순위
+1.회원
+2.상품
+3.후기
+4.주문
+5.주문 상세
+6.결제
+7.찜
+8.이미지
+
++ JDBC UTIL
++ 결제 분리~~
++ 결제용 DAO
+
+접근제어 리턴 메서드명 입력값
+기능 종류
+//==============================================================
+
+// 회원가입
+static final String sql_INSERT = 
+"INSERT INTO MEMBER (MEMBER_ID, MEMBER_PW, MEMBER_NAME, MEMBER_ADDRESS, MEMBER_PHONE, MEMBER_EMAIL)
+VALUES(?, ?, ?, ?, ?, ?);";
+
+//로그인
+static final String sql_SELECTONE = 
+"SELECT MEMBER_ID, MEMBER_PW, MEMBER_NAME, MEMBER_ADDRESS, MEMBER_PHONE, MEMBER_EMAIL
+FROM MEMBER
+WHERE MEMBER_ID = ? AND MEMBER_PW = ?;";
+
+// 회원 정보 수정
+static final String sql_UPDATE = 
+"UPDATE MEMBER SET MEMBER_PW = ?, MEMBER_NAME = ?, MEMBER_ADDRESS = ?, MEMBER_PHONE = ?, MEMBER_EMAIL = ?
+WHERE MEMBER_ID = ?;";
+
+[ Member ]
+public ArrayList<MemberVO> selectAll(MemberVO mVO){
+	//해당사항 없음
+}
+
+public MemberVO selectOne(MemberVO mVO){
+	1. 로그인 login
+	2. 중복 확인
+}
+
+public boolean insert(MemberVO mVO){
+	1.회원가입 signup
+}
+
+public boolean update(MemberVO mVO){
+	1. 회원 정보 수정 updateInfo
+	2. 비밀번호 변경 updatePw
+	---> 얘네 둘이 같은 쿼리로 수행해도 되나요?
+	---> 정보를 둘 다 가지고 있냐는 뜻입니다
+}
+
+public boolean delete(MemberVO mVO){
+	// 해당 사항 없음 1. 회원 탈퇴
+}
+
+//==============================================================
+static final String sql_SELECTALL= 
+SELECT TEA_NUM, TEA_NAME, TEA_PRICE, TEA_CNT, TEA_CATEGORY, TEA_CONTENT
+FROM TEA
+WHERE 
+	CASE
+	WHEN ? IS NOT NULL AND ? IS NOT NULL THEN
+		TEA_CATEGORY = ? AND (TEA_NAME LIKE CONCAT('%', ?, '%') OR TEA_CONTENT LIKE CONCAT('%', ?, '%'))
+	
+	WHEN NULL IS NOT NULL AND NULL IS NULL THEN
+		TEA_CATEGORY = '홍차'
+
+	WHEN NULL IS NULL AND NULL IS NOT NULL THEN
+		TEA_NAME LIKE CONCAT('%', NULL, '%') OR TEA_CONTENT LIKE CONCAT('%', NULL, '%')
+	ELSE
+		TEA_CATEGORY = '녹차'
+;
+
+
+
+static final String sql_SELECTALL_FILTER = 
+SELECT t.TEA_NUM, t.TEA_NAME, t.TEA_PRICE, t.TEA_CNT, t.TEA_CATEGORY, t.TEA_CONTENT, i.IMAGE_URL
+FROM TEA t JOIN IMAGE i USING (TEA_NUM)
+WHERE t.TEA_CATEGORY LIKE CONCAT('%', '', '%') AND (t.TEA_NAME LIKE CONCAT('%','티', '%') OR t.TEA_CONTENT LIKE CONCAT('%', '티', '%')) AND i.IMAGE_DIVISION = 1;
+
+
+1. 전체 검색 1=ㄴㄴ 2=ㄴㄴ
+
+2. 카테고리만 검색 1=ㅇㅇ, 2= ㄴㄴ
+
+3. 검색어로만 검색 1=ㄴㄴ, 2=ㅇㅇ
+
+4. 카테고리 + 검색어 동시 검색 1=ㅇㅇ 2=ㅇㅇ
+
+static final String sql_SELECTONE = 
+"SELECT TEA_NUM, TEA_NAME, TEA_PRICE, TEA_CNT, TEA_CATEGORY, TEA_CONTENT
+FROM TEA
+WHERE TEA_NUM = ?;";
+
+static final String SQL_UPDATE = 
+UPDATE TEA SET TEA_CNT = ? WHERE TEA_NUM = ?
+
+
+대표 이미지 URL 임시변수로 같이 들고 다닐 예정
+[ Tea ]
+public ArrayList<TeaVO> selectAll(TeaVO tVO){
+	1. 전체 차 목록 teaPage
+	2. 필터 검색 teaPage
+}
+
+public TeaVO selectOne(TeaVO tVO){
+	1. 차 정보 출력(한건) teaDetailPage
+}
+
+public boolean insert(TeaVO tVO){
+	//해당사항 없음
+}
+
+public boolean update(TeaVO tVO){
+	1. 주문시 cnt upadte
+}
+
+public boolean delete(TeaVO tVO){
+	//해당사항 없음
+}
+
+//==============================================================
+
+// 전체 차 목록 출력시 대표 이미지 ---> teaDAO에서 처리
+static final String sql_SELECTALL = 
+SELECT IMAGE_URL FROM IMAGE WHERE TEA_NUM = ?;
+
+static final String sql_SELECTONE = 
+SELECT IMAGE_URL
+FROM IMAGE
+WHERE TEA_NUM = ? AND IMAGE_DIVISION = ?;
+
+
+
+
+[ Image ]
+public ArrayList<ImageVO> selectAll(ImageVO iVO){
+	1. 전체 차 목록 출력시 해당 이미지 teaPage
+	2. 차 정보 출력(한건) teaDetailPage ---> 상품 이미지가 여러개일수도 
+}
+
+public ImageVO selectOne(ImageVO iVO){
+	//2. 상세 리뷰 출력 reviewsDetailPage
+}
+
+public boolean insert(ImageVO iVO){
+	//1. 후기 작성시 (이미지 존재) insertReviews
+}
+
+public boolean update(ImageVO iVO){
+	//1. 해당 후기 수정시 updateReviews
+}
+
+public boolean delete(ImageVO iVO){
+	//1. 해당 후기 삭제시 deleteReviews
+}
+
+//==============================================================
+
+static final String sql_SELECTALL = 
+SELECT BUY_NUM FROM BUY WHERE MEMBER_ID = ?;
+
+static final String sql_SELECTONE = 
+SELECT BUY_NUM FROM BUY WHERE BUY_NUM = ?;
+
+static final String sql_INSERT = 
+INSERT INTO BUY(MEMBER_ID) VALUES(?);
+
+
+
+
+[ Buy ]
+public ArrayList<BuyVO> selectAll(BuyVO bVO){
+	1. 해당 회원의 모든 주문 내역 출력 orderListPage
+}
+
+public BuyVO selectOne(BuyVO bVO){
+
+}
+
+public boolean insert(BuyVO bVO){
+	1. 주문 order
+}
+
+public boolean update(BuyVO bVO){
+	//해당사항 없음
+}
+
+public boolean delete(BuyVO bVO){
+	//해당사항 없음
+}
+
+//==============================================================
+static final String sql_SELECTALL = 
+SELECT bt.BUY_SERIAL, bt.BUY_NUM, t.TEA_NUM, bt.BUY_CNT, t.TEA_NAME
+FROM BUY_DETAIL bt JOIN TEA t USING (TEA_NUM)
+WHERE bt.BUY_NUM=?;
+
+static final String sql_SELECTONE = 
+SELECT BUY_SERIAL, BUY_NUM, TEA_NUM, BUY_CNT
+FROM BUY_DETAIL
+WHERE BUY_SERIAL= ?;
+
+static final String sql_INSERT = 
+INSERT INTO BUY_DETAIL(BUY_NUM, TEA_NUM, BUY_CNT)
+VALUES(?, ?, ?);
+
+[ Buy_Detail ]
+public ArrayList<BuyVO> selectAll(BuyVO bVO){
+	1. 해당 주문번호의 모든 주문 내역 상세 출력 orderDetailPage
+}
+
+public BuyVO selectOne(BuyVO bVO){
+	1. 해당 주문 상세번호 출력
+}
+
+public boolean insert(BuyVO bVO){
+	1. 주문 order
+}
+
+public boolean update(BuyVO bVO){
+	//해당사항 없음
+}
+
+public boolean delete(BuyVO bVO){
+	//해당사항 없음
+}
+
+//==============================================================
+
+INSERT INTO PAYMENT(PAYMENT_NAME, PAYMENT_CUSTOMER) VALUES(?, ?);
+
+
+[ Payment ]
+public ArrayList<PaymentVO> selectAll(PaymentVO pVO){
+	// 해당사항 없음
+}
+
+public PaymentVO selectOne(PaymentVO pVO){
+	// 해당사항 없음
+}
+
+public boolean insert(PaymentVO pVO){
+	1. 결제 order
+}
+
+public boolean update(PaymentVO pVO){
+	//해당사항 없음
+}
+
+public boolean delete(PaymentVO pVO){
+	//해당사항 없음
+}
+
+//==============================================================
+// 전체후기
+static final String sql_SELECTALL = 
+SELECT REVIEW_NUM, MEMBER_ID, BUY_SERIAL, REVIEW_TITLE, REVIEW_CONTENT
+FROM REVIEW
+
+//상품후기
+static final String sql_SELECTALL_TEA = 
+SELECT REVIEW_NUM, MEMBER_ID, BUY_SERIAL, REVIEW_TITLE, REVIEW_CONTENT
+FROM REVIEW
+WHERE TEA_NUM = ?;
+
+//내가쓴후기
+static final String sql_SELECTALL_MEMBER = 
+SELECT REVIEW_NUM, MEMBER_ID, BUY_SERIAL, REVIEW_TITLE, REVIEW_CONTENT
+FROM REVIEW
+WHERE MEMBER_ID = ?;
+
+static final String sql_SELECTONE = 
+SELECT REVIEW_NUM, MEMBER_ID, BUY_SERIAL, REVIEW_TITLE, REVIEW_CONTENT
+FROM REVIEW
+WHERE REVIEW_NUM = ?;
+
+static final String sql_INSERT = 
+INSERT INTO REVIEW(MEMBER_ID, BUY_SERIAL, REVIEW_TITLE, REVIEW_CONTENT) VALUES( ?, ?, ?, ?);
+
+
+static final String sql_UPDATE = 
+UPDATE REVIEW SET REVIEW_TITLE = ?, REVIEW_CONTENT =? WHERE REVIEW_NUM = ?;
+
+
+static final String sql_DELETE = 
+DELETE FROM REVIEW WHERE REVIEW_NUM = ?
+
+
+[ Review ]
+public ArrayList<ReviewVO> selectAll(ReviewVO rVO){
+	1. 후기 목록 페이지(전체 후기 출력) reviewsPage 	// 전체후기
+	2. 상품 PK로 				// 상품후기
+}
+
+public ReviewVO selectOne(ReviewVO rVO){
+	1. 후기 상세 reviewsDetailPage
+}
+
+public boolean insert(ReviewVO rVO){
+	1. 후기 작성 insertReviews
+}
+
+public boolean update(ReviewVO rVO){
+	1. 후기 수정 updateReviews
+}
+
+public boolean delete(ReviewVO rVO){
+	1. 후기 삭제 deleteReviews
+}
+
+//==============================================================
+static final String sql_INSERT = 
+INSERT INTO FAVOR(MEMBER_ID, TEA_NUM) VALUES(?, ?);
+
+static final String sql_DELETE = 
+DELETE FROM FAVOR WHERE FAVOR_NUM = ?
+
+[ favor ]
+public ArrayList<FavorVO> selectAll(FavorVO fVO){
+	1. 해당 회원이 찜한 모든 상품 favorPage
+}
+
+public FavorVO selectOne(FavorVO fVO){
+	// 해당 사항 없음
+}
+
+public boolean insert(FavorVO fVO){
+	1. 찜 목록에 추가 insertFavor
+	----> 월요일에 비동기 뷰처리
+}
+
+public boolean update(FavorVO fVO){
+	// 해당 사항 없음
+}
+
+public boolean delete(LikeVO lVO){
+	1. 찜 목록에서 삭제 deleteFavor.do
+	----> 월요일에 비동기 뷰처리
+}
+
+//==============================================================
+
+
+
+

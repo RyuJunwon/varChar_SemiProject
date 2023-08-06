@@ -1,0 +1,206 @@
+VO 작성
+DAO 작성
+
+--우선순위
+1.회원
+2.상품
+3.후기
+4.주문
+5.주문 상세
+6.결제
+7.찜
+8.이미지
+
++ JDBC UTIL ---> 있는거 씀
++ 결제 분리~~
++ 결제용 DAO
+
+접근제어 리턴 메서드명 입력값
+기능 종류
+
+전체적으로 헷갈리는 것
+	: 거진 다 selectAll해서 보여주고 그 중에 하나를 선택하는식인데
+	 그럼 그걸 for문으로 돌리니까
+	 그럼 selectOne 필요없는 거 아님?????? ---> ㅇㅇㄴㅇ~~~~
+//==============================================================
+[ Member ]
+public ArrayList<MemberVO> selectAll(MemberVO mVO){
+	//해당사항 없음
+}
+
+public MemberVO selectOne(MemberVO mVO){
+	1. 로그인
+}
+
+public boolean insert(MemberVO mVO){
+	1.회원가입
+}
+
+public boolean update(MemberVO mVO){
+	1. 회원 정보 수정
+	2. 비밀번호 변경(이거 둘이 왜 다름???)
+}
+
+public boolean delete(MemberVO mVO){
+	1. 회원 탈퇴
+}
+//==============================================================
+[ Tea ]
+public ArrayList<TeaVO> selectAll(TeaVO tVO){
+	1. 전체 차 목록
+	2. 필터 검색
+}
+
+public TeaVO selectOne(TeaVO tVO){
+	1. 차 정보 출력(한건)** ---> 할일이 있음?
+}
+
+public boolean insert(TeaVO tVO){
+	//해당사항 없음
+}
+
+public boolean update(TeaVO tVO){
+	//해당사항 없음
+}
+
+public boolean delete(TeaVO tVO){
+	//해당사항 없음
+}
+
+//==============================================================
+[ Image ]
+public ArrayList<ImageVO> selectAll(ImageVO iVO){
+	1. 전체 차 목록 출력시 해당 이미지
+}
+
+public ImageVO selectOne(ImageVO iVO){
+	1. 차 정보 출력(한건)** ---> 할일이 있음?
+}
+
+public boolean insert(ImageVO iVO){
+	1. 후기 작성시 이미지 존재
+}
+
+public boolean update(ImageVO iVO){
+	1. 해당 후기 수정시
+}
+
+public boolean delete(ImageVO iVO){
+	1. 해당 후기 삭제시
+}
+
+//==============================================================
+[ Buy ]
+public ArrayList<BuyVO> selectAll(BuyVO bVO){
+	1. 해당 회원의 모든 주문 내역 출력
+}
+
+public BuyVO selectOne(BuyVO bVO){
+	
+}
+
+public boolean insert(BuyVO bVO){
+	1. 주문
+}
+
+public boolean update(BuyVO bVO){
+	//해당사항 없음
+}
+
+public boolean delete(BuyVO bVO){
+	//해당사항 없음
+}
+
+//==============================================================
+[ Buy_Detail ]
+public ArrayList<BuyVO> selectAll(BuyVO bVO){
+	1. 해당 주문번호의 모든 주문 내역 상세 출력
+}
+
+public BuyVO selectOne(BuyVO bVO){
+	
+}
+
+public boolean insert(BuyVO bVO){
+	1. 주문
+}
+
+public boolean update(BuyVO bVO){
+	//해당사항 없음
+}
+
+public boolean delete(BuyVO bVO){
+	//해당사항 없음
+}
+
+//==============================================================
+[ Payment ]
+public ArrayList<PaymentVO> selectAll(PaymentVO pVO){
+	// 해당사항 없음
+}
+
+public PaymentVO selectOne(PaymentVO pVO){
+	// 해당사항 없음
+	// 결제 내역 보여주는게 없는데 맞나여
+}
+
+public boolean insert(PaymentVO pVO){
+	1. 결제
+}
+
+public boolean update(PaymentVO pVO){
+	//해당사항 없음
+}
+
+public boolean delete(PaymentVO pVO){
+	//해당사항 없음
+}
+
+//==============================================================
+[ Review ]
+public ArrayList<ReviewVO> selectAll(ReviewVO rVO){
+	1. 후기 목록 페이지(해당 상품의 모든 후기 or 해당 사람이 쓴 후기)
+}
+
+public ReviewVO selectOne(ReviewVO rVO){
+	1. 후기 상세
+}
+
+public boolean insert(ReviewVO rVO){
+	1. 후기 작성
+}
+
+public boolean update(ReviewVO rVO){
+	1. 후기 수정
+}
+
+public boolean delete(ReviewVO rVO){
+	1. 후기 삭제
+}
+
+//==============================================================
+[ favor ]
+public ArrayList<FavorVO> selectAll(FavorVO fVO){
+	1. 해당 회원이 찜한 모든 상품
+}
+
+public FavorVO selectOne(FavorVO fVO){
+	// 해당 사항 없음
+}
+
+public boolean insert(FavorVO fVO){
+	1. 찜 목록에 추가 ----> 월요일에 비동기 뷰처리
+}
+
+public boolean update(FavorVO fVO){
+	// 해당 사항 없음
+}
+
+public boolean delete(LikeVO lVO){
+	1. 찜 목록에서 삭제 ----> 월요일에 비동기 뷰처리
+}
+//==============================================================
+
+
+
+
